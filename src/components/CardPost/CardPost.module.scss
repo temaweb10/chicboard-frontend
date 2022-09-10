@@ -1,0 +1,18 @@
+.card-post-card {
+  padding: 12px;
+  max-width: 300px;
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    .card-price {
+      color: #000;
+      font-weight: 600;
+      font-size: 24px;
+    }
+    .card-title {
+      color: #111;
+      font-weight: 400;
+      font-size: 24px;
+    }
+  }
+}
