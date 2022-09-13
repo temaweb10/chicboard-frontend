@@ -1,0 +1,19 @@
+.create-post_body {
+  background-color: #f9f9f9;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  .create-post_parent {
+    max-width: 1110px;
+    margin: 0 auto;
+    .create-post_content {
+      background-color: #fff;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      .input {
+        margin-bottom: 18px;
+      }
+    }
+  }
+}

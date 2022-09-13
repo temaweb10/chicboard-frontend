@@ -7,10 +7,14 @@ function CardPost({ post }) {
   return (
     <Grid xs={2} sm={4} md={4}>
       <Card className={styles["card-post-card"]}>
-        <div className={styles["card-content"]}>
-          <span className={styles["card-price"]}>{post.price}</span>
-          <span className={styles["card-title"]}>{post.title}</span>
-        </div>
+        <Link to={`/post/${post._id}`} style={{ textDecoration: "none" }}>
+          <div className={styles["card-content"]}>
+            <span className={styles["card-price"]}>
+              {Number(post.price).toLocaleString()}
+            </span>
+            <span className={styles["card-title"]}>{post.title}</span>
+          </div>
+        </Link>
       </Card>
     </Grid>
   );

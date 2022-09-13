@@ -45,7 +45,7 @@ const Header = () => {
     },
     {
       name: "Разместить объявление",
-      path: "/add-post",
+      path: "/post/create",
     },
   ];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -169,11 +169,12 @@ const Header = () => {
                       {currentUser?.auth ? (
                         <Avatar
                           title={currentUser?.auth?.currentUser?.user?.username}
+                          src={currentUser.auth.currentUser.user.avatar}
                         >
-                          {(currentUser?.auth?.currentUser?.user?.username).slice(
+                          {/*    {(currentUser?.auth?.currentUser?.user?.username).slice(
                             0,
                             1
-                          )}
+                          )} */}
                         </Avatar>
                       ) : (
                         ""
