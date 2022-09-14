@@ -4,10 +4,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { v4 } from "uuid";
 import Header from "../../components/Header/Header";
+import { storage } from "../../firebase";
 import styles from "../CreatePost/CreatePost.module.scss";
+
 function CreatePost() {
   const currentUser = useSelector((state) => state.auth.currentUser);
   const id = currentUser?.user?.id;
@@ -22,11 +26,34 @@ function CreatePost() {
     price: "",
     tel: "",
   });
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageList, setImageList] = useState([]);
+  const imageListRef = ref(storage, "post_images/");
+
+  const uploadImage = () => {
+    if (imageUpload == null) return;
+    console.log(imageUpload);
+    const imageRef = ref(storage, `post_images/${v4()}`);
+    for (let i = 0; i < imageUpload.length; i++) {
+      console.log(imageUpload[i]);
+      uploadBytes(imageRef, imageUpload[i]).then((snapShot) => {
+        console.log(snapShot);
+        getDownloadURL(snapShot.ref).then((url) => {
+          setImageList((prev) => [...prev, url]);
+        });
+      });
+    }
+  };
   const sendData = () => {
     try {
-      console.log(id);
+      console.log(imageList);
       axios
-        .post("/api/add-post", { ...inputValues, ...selectValues, id })
+        .post("/api/add-post", {
+          ...inputValues,
+          ...selectValues,
+          post_images: imageList,
+          id,
+        })
         .then((res) => {
           console.log(res);
         })
@@ -88,6 +115,18 @@ function CreatePost() {
                 setInputValues({ ...inputValues, about: e.target.value })
               }
             />
+            <div>
+              <input
+                type="file"
+                multiple={true}
+                accept="image/*,image/jpeg"
+                onChange={(event) => setImageUpload(event.target.files)}
+              />
+              <button onClick={uploadImage}>Фотографии</button>
+              {imageList.map((url) => {
+                return <img src={url} style={{ width: "200px" }} key={v4()} />;
+              })}
+            </div>
             <InputLabel id="demo-simple-select-label">Категория</InputLabel>
             <Select
               labelId="demo-simple-select-label"
