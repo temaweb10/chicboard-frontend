@@ -36,7 +36,8 @@ function CreatePost() {
     const imageRef = ref(storage, `post_images/${v4()}`);
     for (let i = 0; i < imageUpload.length; i++) {
       console.log(imageUpload[i]);
-      uploadBytes(imageRef, imageUpload[i]).then((snapShot) => {
+      uploadBytes(ref(storage, `post_images/${v4() + i + Date.now()}`), imageUpload[i]).then((snapShot) => {
+        console.log(i)
         console.log(snapShot);
         getDownloadURL(snapShot.ref).then((url) => {
           setImageList((prev) => [...prev, url]);
