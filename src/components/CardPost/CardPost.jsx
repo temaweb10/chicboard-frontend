@@ -20,7 +20,7 @@ function CardPost({ post }) {
           "--swiper-pagination-color": "#fff",
         }}
         zoom={true}
-        autoHeight={false}
+        autoHeight={true}
         pagination={{
           clickable: true,
         }}
@@ -29,9 +29,9 @@ function CardPost({ post }) {
       >
 
         {post.post_images.map((value)=>{
-          return ( <SwiperSlide key={`swiperjs_${Date.now() - Math.random(100) * 100}`}>
+          return ( <SwiperSlide  key={`swiperjs_${Date.now() - Math.random(100) * 100}`}>
           <div className="swiper-zoom-container">
-            <img src={value} />
+            <img src={value} style={{height:'250px'}}/>
           </div>
         </SwiperSlide>)
         })}
@@ -42,9 +42,14 @@ function CardPost({ post }) {
         <Link to={`/post/${post._id}`} style={{ textDecoration: "none" }}>
           <div className={styles["card-content"]}>
             <span className={styles["card-price"]}>
-              {Number(post.price).toLocaleString()}
+              {`${Number(post.price).toLocaleString()} ₽`}
             </span>
+           
+          
             <span className={styles["card-title"]}>{post.title}</span>
+            <span className={styles["card-title"]}>
+              {`${ new Date(post.createdAt).toLocaleDateString()} `}
+            </span>
           </div>
         </Link>
       </Card>
