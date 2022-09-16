@@ -4,6 +4,10 @@
   .card-content {
     display: flex;
     flex-direction: column;
+    .card-post_image{
+      height: 250px;
+      object-fit: cover
+    }
     .card-price {
       color: #000;
       font-weight: 600;
@@ -14,5 +18,16 @@
       font-weight: 400;
       font-size: 24px;
     }
+  }
+}
+
+@media(max-width:760px){
+  .card-post_image{
+    height: 220px;
+  }
+}
+@media(max-width:420px){
+  .card-post_image{
+    height: 160px;
   }
 }

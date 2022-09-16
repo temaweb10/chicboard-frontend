@@ -139,6 +139,7 @@ function CreatePost() {
                 setSelectValues({ ...selectValues, category: e.target.value })
               }
             >
+              <MenuItem value={"realty"}>Недвижимость</MenuItem>
               <MenuItem value={"technic"}>Техника</MenuItem>
               <MenuItem value={"car"}>Машина</MenuItem>
               <MenuItem value={"animal"}>Животное</MenuItem>

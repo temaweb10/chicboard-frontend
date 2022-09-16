@@ -26,7 +26,7 @@ function Posts() {
     <div>
       {loading ? (
         <div>
-          <Grid
+          <Grid  alignItems="stretch"
             container
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 17 }}
