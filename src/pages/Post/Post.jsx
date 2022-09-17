@@ -13,6 +13,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { GrFavorite } from "react-icons/gr";
 import Avatar from "@mui/material/Avatar";
+import Rating from "@mui/material/Rating";
+
 const Post = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -109,6 +111,7 @@ const Post = () => {
                 ) : (
                   ""
                 )}
+                <Rating name="read-only" value={1} readOnly />
               </div>
             </div>
           </div>

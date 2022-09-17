@@ -1,14 +1,41 @@
 .sign-text {
-  color: #fff;
-  font-weight: 500;
-  font-size: 18px;
+  font-family: 'Montserrat';
+  color: #333;
+  font-weight: 600;
+  font-size: 16px;
   text-decoration: none;
   margin-right: 12px;
 }
 
+
+
+.header-top{
+  background-color: #222;
+  display: flex;
+  justify-content: flex-end;
+}
+
+header{
+  background-color: #fff!important;
+  border-bottom: 0.1px solid #ccc!important;
+  box-shadow: none!important;
+
+}
 .menu-link-page {
-  color: #fff;
+  font-family: 'Montserrat';
+  color: #111;
   font-weight: 500;
   font-size: 14px;
-  text-decoration: none;
+  text-decoration: none!important;
+}
+a{
+  text-decoration: none!important;
+}
+.logo-text{
+  font-family: 'Roboto';
+  background-image: linear-gradient( 90deg, rgba(0, 204, 195, 1) 12%, rgba(0, 186, 204, 1) 88% );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 32px;
+  font-weight: 700!important;
 }

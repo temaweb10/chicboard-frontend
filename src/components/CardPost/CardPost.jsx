@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/zoom";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+
 function CardPost({ post }) {
   console.log(post);
   return (

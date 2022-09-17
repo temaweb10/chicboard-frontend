@@ -21,9 +21,24 @@ code {
 }
 
 .main-button {
+  background-color: 'gg'!important;
   background: linear-gradient(
     90deg,
     rgba(0, 204, 195, 1) 12%,
     rgba(0, 186, 204, 1) 88%
   );
+}
+
+.button-outlined{
+  font-family: "Montserrat", sans-serif;
+  background: linear-gradient( 90deg, rgb(2, 189, 180) 0%, rgba(0, 186, 204, 1) 88% );
+  /* box-shadow: rgb(0 186 204) 0px 3px 5px; */
+  color: #fff!important;
+    padding: 8px;
+    color: #111;
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 6px;
+    transition: 0.4s ease;
+    transition: all 0.3s ease-in-out;
 }

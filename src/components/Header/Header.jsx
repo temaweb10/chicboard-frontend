@@ -43,10 +43,6 @@ const Header = () => {
       name: "Категории",
       path: "/category",
     },
-    {
-      name: "Разместить объявление",
-      path: "/post/create",
-    },
   ];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -80,15 +76,14 @@ const Header = () => {
               href="/"
               sx={{
                 mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
+
+                letterSpacing: ".2rem",
                 color: "inherit",
                 textDecoration: "none",
               }}
+              className={styles["logo-text"]}
             >
-              LOGO
+              CHICBOARD
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -159,6 +154,15 @@ const Header = () => {
                   </Link>
                 </Button>
               ))}
+              <Button>
+                <Link
+                  to="/post/create"
+                  sx={{ my: 2, color: "white", display: "block" }}
+                  className="button-outlined"
+                >
+                  РАЗМЕСТИТЬ ОБЪЯВЛЕНИЕ
+                </Link>
+              </Button>
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>

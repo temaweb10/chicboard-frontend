@@ -36,8 +36,11 @@ function CreatePost() {
     const imageRef = ref(storage, `post_images/${v4()}`);
     for (let i = 0; i < imageUpload.length; i++) {
       console.log(imageUpload[i]);
-      uploadBytes(ref(storage, `post_images/${v4() + i + Date.now()}`), imageUpload[i]).then((snapShot) => {
-        console.log(i)
+      uploadBytes(
+        ref(storage, `post_images/${v4() + i + Date.now()}`),
+        imageUpload[i]
+      ).then((snapShot) => {
+        console.log(i);
         console.log(snapShot);
         getDownloadURL(snapShot.ref).then((url) => {
           setImageList((prev) => [...prev, url]);
@@ -246,7 +249,11 @@ function CreatePost() {
                 <MenuItem value="83">Ямало-Ненецкий АО</MenuItem>
               </Select>
             </div>
-            <Button variant="contained" onClick={sendData}>
+            <Button
+              variant="contained"
+              className="main-button"
+              onClick={sendData}
+            >
               Выложить объявление
             </Button>
           </div>
