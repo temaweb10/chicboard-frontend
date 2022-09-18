@@ -1,5 +1,5 @@
 .sign-text {
-  font-family: 'Montserrat';
+  font-family: 'Noto Sans';
   color: #333;
   font-weight: 600;
   font-size: 16px;
@@ -32,10 +32,12 @@ a{
   text-decoration: none!important;
 }
 .logo-text{
-  font-family: 'Roboto';
-  background-image: linear-gradient( 90deg, rgba(0, 204, 195, 1) 12%, rgba(0, 186, 204, 1) 88% );
+  font-family: 'Comfortaa';
+  background-color: rgba(255,27,68,1);
+   background-image: linear-gradient(90deg, rgba(255,27,68,1) 41%, rgba(255,103,131,1) 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; 
+/*   color: #FF385C!important; */
   font-size: 32px;
   font-weight: 700!important;
 }

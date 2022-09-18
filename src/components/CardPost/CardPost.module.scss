@@ -1,6 +1,11 @@
+$cardpost-text: #717171;
+
 .card-post-card {
   padding: 12px;
   max-width: 300px;
+  border-radius: 10px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
   .card-content {
     display: flex;
     flex-direction: column;
@@ -9,25 +14,37 @@
       object-fit: cover
     }
     .card-price {
-      color: #000;
+      color: #111;
       font-weight: 600;
       font-size: 24px;
     }
-    .card-title {
-      color: #111;
+    .card-text {
+      color: $cardpost-text;
       font-weight: 400;
-      font-size: 24px;
+      font-size: 18px;
     }
   }
 }
 
+.post-image{
+  height: 200px;
+  object-fit: fill!important
+}
+
+.card-post-content{
+  padding: 6px 9px;
+}
+
 @media(max-width:760px){
-  .card-post_image{
+  .post-image{
     height: 220px;
   }
 }
 @media(max-width:420px){
-  .card-post_image{
-    height: 160px;
+  .post-image{
+    height: 120px;
+  }
+  .swiper-wrapper{
+    height: 120px!important;
   }
 }

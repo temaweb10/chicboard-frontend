@@ -8,6 +8,7 @@ import Login from "./pages/Login/Login";
 import Main from "./pages/Main/Main";
 import Post from "./pages/Post/Post";
 import Registration from "./pages/Registration/Registration";
+import TestFormik from "./components/testFormik/TestFormik";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
         <Route path="/post/create" element={<CreatePost />} />
         <Route path="/post/:idPost" element={<Post />} />
         <Route path="/profile/edit" element={<EditProfile />} />
+        <Route path="/test" element={<TestFormik />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?;400;500;600;700&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -7,6 +9,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f7f7f7;
 }
 
 code {
@@ -21,18 +24,13 @@ code {
 }
 
 .main-button {
-  background-color: 'gg'!important;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 204, 195, 1) 12%,
-    rgba(0, 186, 204, 1) 88%
-  );
+  background-color: #6a47c7!important;
+ 
 }
 
 .button-outlined{
   font-family: "Montserrat", sans-serif;
-  background: linear-gradient( 90deg, rgb(2, 189, 180) 0%, rgba(0, 186, 204, 1) 88% );
-  /* box-shadow: rgb(0 186 204) 0px 3px 5px; */
+  background-color: #FF385C!important;
   color: #fff!important;
     padding: 8px;
     color: #111;
@@ -41,4 +39,17 @@ code {
   border-radius: 6px;
     transition: 0.4s ease;
     transition: all 0.3s ease-in-out;
+    -webkit-box-shadow: 0px 2px 12px 1px rgba(34, 60, 80, 0.2);
+-moz-box-shadow: 0px 2px 12px 1px rgba(34, 60, 80, 0.2);
+box-shadow: 0px 2px 12px 1px rgba(34, 60, 80, 0.2);
+border: none;
+outline: none;
+    
 }
+.button-outlined:hover{
+  background-color: #fb2950!important;
+  cursor: pointer;
+ 
+}
+
+

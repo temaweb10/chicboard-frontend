@@ -11,7 +11,7 @@ import { v4 } from "uuid";
 import Header from "../../components/Header/Header";
 import { storage } from "../../firebase";
 import styles from "../CreatePost/CreatePost.module.scss";
-
+import { Formik, Form, ErrorMessage } from "formik";
 function CreatePost() {
   const currentUser = useSelector((state) => state.auth.currentUser);
   const id = currentUser?.user?.id;
@@ -60,6 +60,7 @@ function CreatePost() {
         })
         .then((res) => {
           console.log(res);
+          alert(res?.data?.message);
         })
         .catch((err) => {
           console.log(err);

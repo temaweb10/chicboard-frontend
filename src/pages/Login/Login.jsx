@@ -1,7 +1,8 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+
+import { Formik, Form, ErrorMessage } from "formik";
 
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "../Login/Login.module.scss";
+import formStyles from "../../styles/FormStyles.module.scss";
 function Login() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.isAuth);
@@ -48,6 +50,7 @@ function Login() {
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+
           <Box
             sx={{
               marginTop: 8,
@@ -56,48 +59,75 @@ function Login() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "#1976d2" }}>
+            <Avatar sx={{ m: 1, bgcolor: "#fb2950" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Вход
             </Typography>
             <Box noValidate sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                label="Никнейм"
-                autoFocus
-                onChange={(e) =>
-                  setUserLogin({ ...userLogin, username: e.target.value })
-                }
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="Пароль"
-                label="Пароль"
-                type="password"
-                onChange={(e) =>
-                  setUserLogin({ ...userLogin, password: e.target.value })
-                }
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={postUser}
-                className="main-buttton"
+              <Formik
+                initialValues={{ username: "", password: "" }}
+                validate={(values) => {
+                  const errors = {};
+                  values.password = userLogin.password;
+                  values.username = userLogin.username;
+                  console.log(values);
+                  if (values.password == "") {
+                    errors.password = "Введите пароль";
+                  }
+                  if (values.username == "") {
+                    errors.username = "Введите никнейм";
+                  }
+
+                  return errors;
+                }}
+                onSubmit={(values, { setSubmitting }) => {
+                  console.log("отправляю");
+
+                  postUser();
+                  setSubmitting(true);
+                }}
               >
-                Вход
-              </Button>
+                {({ isSubmitting }) => (
+                  <Form>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Никнейм"
+                      name="username"
+                      autoFocus
+                      onChange={(e) =>
+                        setUserLogin({ ...userLogin, username: e.target.value })
+                      }
+                    />
+
+                    <ErrorMessage name="username" component="div" />
+
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Пароль"
+                      type="password"
+                      onChange={(e) =>
+                        setUserLogin({ ...userLogin, password: e.target.value })
+                      }
+                    />
+
+                    <button type="submit" className={formStyles["button-form"]}>
+                      Войти
+                    </button>
+                  </Form>
+                )}
+              </Formik>
+
               <Grid container>
                 <Grid item>
                   <Link to="/register" className={styles["login-link"]}>
-                    {"Нету аккаунта ? Зарегистрируйся!"}
+                    {"Создать аккаунт"}
                   </Link>
                 </Grid>
               </Grid>
