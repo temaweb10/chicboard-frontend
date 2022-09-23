@@ -293,7 +293,7 @@ function Registration() {
                     />
 
                     <button type="submit" className={formStyles["button-form"]}>
-                      Войти
+                      Зарегистрироваться
                     </button>
                   </Form>
                 )}

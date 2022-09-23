@@ -9,6 +9,7 @@ import Main from "./pages/Main/Main";
 import Post from "./pages/Post/Post";
 import Registration from "./pages/Registration/Registration";
 import TestFormik from "./components/testFormik/TestFormik";
+import User from "./pages/User/User";
 function App() {
   return (
     <BrowserRouter>
@@ -18,7 +19,8 @@ function App() {
         <Route path="/register" element={<Registration />} />
         <Route path="/post/create" element={<CreatePost />} />
         <Route path="/post/:idPost" element={<Post />} />
-        <Route path="/profile/edit" element={<EditProfile />} />
+        <Route path="/user/edit" element={<EditProfile />} />
+        <Route path="/user/:userId" element={<User />} />
         <Route path="/test" element={<TestFormik />} />
         <Route path="*" element={<Error404 />} />
       </Routes>

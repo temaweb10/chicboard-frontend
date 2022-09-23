@@ -33,6 +33,10 @@ const Header = () => {
     setLoading(true);
   }, []);
 
+  useEffect(() => {
+    /*     console.log(currentUser.auth.currentUser.user.id); */
+  }, [currentUser]);
+
   const pages = ["Объявления", "Категории", "Разместить объявление"];
   const pageObj = [
     {
@@ -43,6 +47,14 @@ const Header = () => {
       name: "Категории",
       path: "/category",
     },
+  ];
+  const settings1 = [
+    {
+      name: "Profile",
+    },
+    "Account",
+    "Dashboard",
+    "Logout",
   ];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -212,11 +224,17 @@ const Header = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem
+                  key={`fff${Math.random(10) * 10} + ${Date.now()}`}
+                  onClick={handleCloseUserMenu}
+                >
+                  <Link
+                    to={`/user/${currentUser?.auth?.currentUser?.user?.id}`}
+                  >
+                    {" "}
+                    <Typography textAlign="center">Profile</Typography>
+                  </Link>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>

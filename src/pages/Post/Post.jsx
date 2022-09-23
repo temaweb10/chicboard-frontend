@@ -4,50 +4,58 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Loader from "../../components/Loader/Loader";
 import styles from "../Post/Post.module.scss";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Lazy, Navigation, Pagination } from "swiper";
-import "swiper/css";
-import "swiper/css/lazy";
-import "swiper/css/zoom";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { GrFavorite } from "react-icons/gr";
-import Avatar from "@mui/material/Avatar";
-import Rating from "@mui/material/Rating";
 
+import { GrFavorite } from "react-icons/gr";
+import PostRight from "./PostRight";
+import { useDispatch, useSelector } from "react-redux";
+import Slider from "../../components/Slider/Slider";
 const Post = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState();
   const [rightData, setRightData] = useState();
   const [loading, setLoading] = useState(null);
-
-  console.log(params.idPost);
+  const currentUser = useSelector((state) => state.auth);
 
   const getPost = async () => {
     await axios
       .get(`/api/post/${params.idPost}`)
-      .then(async (result) => {
+      .then((result) => {
         setPost(result.data);
 
-        await axios
-          .get(`/api/user/find/${result.data.id}`)
-          .then((rightDataRes) => {
-            console.log(rightDataRes);
-            setRightData(rightDataRes.data);
-            setLoading("true");
-          });
+        axios.get(`/api/user/find/${result.data.id}`).then((rightDataRes) => {
+          setRightData(rightDataRes.data);
+          setLoading("true");
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const addNewFavoritePost = async () => {
+    await axios.post("/api/add-favorite-post", {});
+  };
+
   useEffect(() => {
     getPost();
+
+    console.log(currentUser);
   }, []);
   useEffect(() => {
     console.log("Загрузилось");
+    const addView = async () => {
+      const { data } = await axios.put(
+        `/api/post-views-update/${params.idPost}`,
+        {
+          currentViews: post.views,
+        }
+      );
+      console.log(data);
+    };
+    if (loading !== null) {
+      addView();
+    }
   }, [loading]);
 
   return (
@@ -60,18 +68,18 @@ const Post = () => {
               <div className={styles["top-side"]}>
                 <h2 className={styles["post-title"]}>{post.title}</h2>
 
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <button
+                  style={{ display: "flex", alignItems: "center" }}
+                  onClick={addNewFavoritePost}
+                >
                   <GrFavorite className={styles["icon-favorite"]} />
                   <p className={styles["text-favorite"]}>Добавть в избранное</p>
-                </div>
+                </button>
               </div>
 
               <div className={styles["swiper-parent"]}>
-                <Swiper
-                  style={{
-                    "--swiper-navigation-color": "#fff",
-                    "--swiper-pagination-color": "#fff",
-                  }}
+                <Slider
+                  images={post.post_images}
                   lazy={true}
                   pagination={{
                     clickable: true,
@@ -79,41 +87,12 @@ const Post = () => {
                   spaceBetween={4}
                   autoHeight={true}
                   navigation={true}
-                  modules={[Lazy, Pagination, Navigation]}
-                  className="mySwiper"
-                >
-                  {post.post_images.map((value) => {
-                    return (
-                      <SwiperSlide
-                        key={`swiperjs_${Date.now() - Math.random(100) * 100}`}
-                      >
-                        <div className="swiper-zoom-container">
-                          <img
-                            src={value}
-                            className={styles["post-image"]}
-                            alt="404"
-                          />
-                        </div>
-                      </SwiperSlide>
-                    );
-                  })}
-                </Swiper>
+                />
               </div>
+
+              <h2 className={styles["post-title"]}>{post.views}</h2>
             </div>
-            <div className={styles["page-right"]}>
-              <div className={styles["post-user"]}>
-                <Avatar src={rightData.avatar} />
-                {rightData?.createdAt ? (
-                  <p>
-                    На сайте с{" "}
-                    {new Date(rightData?.createdAt).toLocaleDateString()}
-                  </p>
-                ) : (
-                  ""
-                )}
-                <Rating name="read-only" value={1} readOnly />
-              </div>
-            </div>
+            <PostRight rightData={rightData} />
           </div>
         ) : (
           <Loader />
