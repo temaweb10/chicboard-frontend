@@ -14,6 +14,7 @@ function Slider({
   pagination,
   navigation,
   autoHeight,
+  className
 }) {
   return (
     <div>
@@ -22,13 +23,13 @@ function Slider({
           "--swiper-navigation-color": "#fff",
           "--swiper-pagination-color": "#fff",
         }}
-        /*   lazy={lazy} */
+        lazy={lazy}
         pagination={pagination}
         spaceBetween={spaceBetween}
         autoHeight={autoHeight}
         navigation={navigation}
         modules={[Lazy, Pagination, Navigation]}
-        className="mySwiper"
+        className={className ? className : "mySwiper"}
       >
         {images.map((value) => {
           return (

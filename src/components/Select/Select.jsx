@@ -1,6 +1,6 @@
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import SelectMUI from "@mui/material/Select";
 import React, { useState } from "react";
 import styles from "../CreatePost/CreatePost.module.scss";
 

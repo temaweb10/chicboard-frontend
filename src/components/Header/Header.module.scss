@@ -1,5 +1,5 @@
 .sign-text {
-  font-family: 'Noto Sans';
+  font-family: "Noto Sans";
   color: #333;
   font-weight: 600;
   font-size: 16px;
@@ -7,37 +7,50 @@
   margin-right: 12px;
 }
 
-
-
-.header-top{
+.header-top {
   background-color: #222;
   display: flex;
   justify-content: flex-end;
 }
 
-header{
-  background-color: #fff!important;
-  border-bottom: 0.1px solid #ccc!important;
-  box-shadow: none!important;
-
+header {
+  background-color: #fff !important;
+  border-bottom: 0.1px solid #ccc !important;
+  box-shadow: none !important;
 }
 .menu-link-page {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   color: #111;
   font-weight: 500;
   font-size: 14px;
-  text-decoration: none!important;
+  text-decoration: none !important;
 }
-a{
-  text-decoration: none!important;
+a {
+  text-decoration: none !important;
 }
-.logo-text{
-  font-family: 'Comfortaa';
-  background-color: rgba(255,27,68,1);
-   background-image: linear-gradient(90deg, rgba(255,27,68,1) 41%, rgb(223,47,99) 100%);
+.logo-text {
+  font-family: "Quicksand", sans-serif !important;
+  font-family: "Comfortaa";
+  background-color: rgba(255, 27, 68, 1);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 27, 68, 1) 41%,
+    rgb(223, 47, 99) 100%
+  );
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-/*   color: #FF385C!important; */
+  -webkit-text-fill-color: transparent;
+  /*   color: #50c878!important; */
+  /*   color: #FF385C!important; */
+
   font-size: 32px;
-  font-weight: 700!important;
+  font-weight: 800 !important;
 }
+
+/* header{
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+  background: rgba(253, 252, 252, 0.9)!important;
+  transition: background-color .2s ease-in-out;
+  backdrop-filter: blur(12px);
+} */

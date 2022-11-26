@@ -1,0 +1,41 @@
+.profile{
+    display: flex;
+    .profile-left{
+        width: 25%;
+        height: 100vh;
+        background-color: #ccc;
+        padding: 12px;
+        .profile-avatar{
+            width: 64px;
+            height: 64px;
+            font-size: 32px;
+        }
+        .profile-avatar-block{
+            display: flex;
+            align-items: center;
+        }
+        .profile-avatar-block-child{
+            margin-left: 16px;
+        }
+    }
+    .profile-right{
+        width: 75%;
+        height: 100vh;
+        padding: 12px;
+        background-color: #e1e1e1;
+    }
+}
+
+@media(max-width:850px){
+    .profile{
+        flex-direction: column;
+        .profile-left{
+            width: 100%;
+        }
+        .profile-right{
+            width: 100%;
+        }
+    }
+  
+}
+

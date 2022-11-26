@@ -1,51 +1,73 @@
-.product-content{
-    display: flex;
-    .page-left{
-
+.product-content {
+  display: flex;
+  .page-left {
     padding: 12px;
     width: 70%;
-    }
-    .page-right{
+  }
+  .page-right {
+    background-color: rgb(248, 248, 248);
+    padding: 12px;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+  }
 
-        padding: 6px;
-        width:30%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-    }
-
-    .post-title{
-        font-family: 'Montserrat';
-        font-weight: 500;
-        font-size: 40px;
-        color: #111;
-        margin: 12px 0;
-    }
-    .post-image{
-        height: 350px;
-        object-fit: cover
-    }
-    .swiper-parent{
-        background-color: #111;
-    }
-    .top-side{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .text-favorite{
-        font-family: 'Montserrat';
-        color: #111;
-        font-weight: 500;
-        font-size: 12px;
-        margin-left: 12px;
-    }
-    .icon-favorite{
-        font-size: 22px;
-      
-    }
+  .post-title {
+    font-family: "Montserrat";
+    font-weight: 500;
+    font-size: 40px;
+    color: #111;
+    margin: 4px 0;
+  }
+  .post-image {
+    height: 350px;
+    object-fit: cover;
+  }
+  .swiper-parent {
+    background-color: #111;
+  }
+  .top-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .text-favorite {
+    font-family: "Montserrat";
+    color: #111;
+    font-weight: 500;
+    font-size: 12px;
+    margin-left: 12px;
+    text-decoration: underline;
+  }
+  .icon-favorite {
+    font-size: 22px;
+  }
+  .post-text {
+    color: rgb(133, 133, 133);
+  }
+  .post-price {
+    color: rgb(51, 51, 51);
+    font-size: 32px;
+    font-weight: 600;
+  }
+  .post-user-avatar {
+    background-color: "rgba(255,27,68,1)";
+    width: 48px;
+    height: 48px;
+    margin-right: 12px;
+  }
+  .post-user {
+    margin-top: 26px;
+  }
 }
 
+.swiper {
+  height: 400px !important;
+}
 
-
+.button-favorite {
+  background-color: rgba(0, 255, 0, 0);
+  border: none;
+  outline: none;
+}

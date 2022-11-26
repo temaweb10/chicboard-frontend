@@ -3,47 +3,37 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CardPost from "../CardPost/CardPost";
 import Loader from "../Loader/Loader";
-function Posts() {
-  const [posts, setPosts] = useState();
-  const [loading, setLoading] = useState(null);
-  const getPosts = async () => {
-    await axios
-      .get("/api/posts")
-      .then((result) => {
-        console.log(result);
-        setPosts(result.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setLoading("true");
-  };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
+function Posts({ posts, spacing, columns }) {
   return (
     <div>
-      {loading ? (
-        <div>
-          <Grid  alignItems="stretch"
-            container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 17 }}
-          >
-            {posts.map((post) => {
+      <div>
+        <Grid
+          alignItems="stretch"
+          container
+          spacing={spacing}
+          columns={columns}
+        >
+          {posts.map((post) => {
+            if (post[0]) {
+              return (
+                <CardPost
+                  post={post[0]}
+                  key={`${Date.now()}_post${Math.random(10)}`}
+                />
+              );
+            } else {
               return (
                 <CardPost
                   post={post}
                   key={`${Date.now()}_post${Math.random(10)}`}
                 />
               );
-            })}
-          </Grid>
-        </div>
-      ) : (
-        <Loader />
-      )}
+            }
+          })}
+        </Grid>
+      </div>
+
       {/*  {posts.map((post) => {
         <Post post={post} key={`${Date.now()}_post${Math.random(10)}`} />;
       })} */}

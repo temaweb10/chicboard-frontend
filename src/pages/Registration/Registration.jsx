@@ -59,7 +59,7 @@ function Registration() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "#fb2950" }}>
+            <Avatar sx={{ m: 1, bgcolor: "rgb(80,200,120)" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
