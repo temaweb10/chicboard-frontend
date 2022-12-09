@@ -2,17 +2,16 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./CardPost.module.scss";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Zoom, Navigation, Pagination } from "swiper";
+import { Navigation, Pagination, Zoom } from "swiper";
 import "swiper/css";
 import "swiper/css/lazy";
-import "swiper/css/zoom";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/zoom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import styles from "./CardPost.module.scss";
 
 function CardPost({ post }) {
-  console.log(post);
   return (
     <Grid xs={2} sm={4} md={4}>
       <Card

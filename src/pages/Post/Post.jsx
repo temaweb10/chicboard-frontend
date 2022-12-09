@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import UseAnimations from "react-useanimations";
 import heart from "react-useanimations/lib/heart";
+import recommendLC from "../../common/recommendLC";
 import Header from "../../components/Header/Header";
 import Loader from "../../components/Loader/Loader";
 import Slider from "../../components/Slider/Slider";
@@ -65,6 +66,7 @@ const Post = () => {
     };
     if (loading !== null) {
       addView();
+      recommendLC(post?.category, post?.podCategory);
     }
   }, [loading]);
 

@@ -1,4 +1,6 @@
 import Rating from "@mui/material/Rating";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,15 +8,17 @@ import locations from "../../common/locations";
 import Avatar from "../../components/Avatar/Avatar";
 import CardPost from "../../components/CardPost/CardPost";
 import CardPosts from "../../components/CardPosts/CardPosts";
+import Header from "../../components/Header/Header";
 import Loader from "../../components/Loader/Loader";
 import styles from "./User.module.scss";
-
 function User() {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
   const [isMe, setIsMe] = useState(false);
   const [me, setMe] = useState("");
+  const [activityPosts, setActivityPosts] = useState([]);
+  const [soldPosts, setsoldPosts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +28,6 @@ function User() {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
         .then((resp) => {
-          console.log(resp);
           setMe(resp.data);
           setIsMe(true);
         })
@@ -38,32 +41,53 @@ function User() {
 
     const getUser = async () => {
       const { data } = await axios.get(`/api/user/findById/${params.userName}`);
-      console.log(data);
       if (data === null) {
       } else {
         setUser(data);
+        console.log(data);
+        data.posts.map((value) => {
+          if (value[0]?.typePost == "active") {
+            setActivityPosts([{ ...activityPosts, ...value }]);
+            console.log("АКТИВВВ ААААА");
+          } else if (value[0]?.typePost == "sold") {
+            setsoldPosts([{ ...soldPosts, ...value }]);
+          }
+        });
         setLoading(true);
       }
     };
     getUser();
-    /*  axios
-      .post("/api/arr", {
-        arr: [{ a: 1, b: 2 }],
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      }); */
   }, []);
   useEffect(() => {
-    console.log(user?.posts);
+    /*     console.log(user?.posts); */
+    console.log(activityPosts);
   }, [user]);
-  let lcs = "52";
 
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+        className={styles["tabpanel-parent"]}
+      >
+        {value === index && <span>{children}</span>}
+      </div>
+    );
+  }
   return (
     <div>
+      <Header />
       {loading == true ? (
         <div className="page-content">
           {1 == 1 ? console.log([isMe, me]) : ""}
@@ -129,7 +153,47 @@ function User() {
               </div>
             </div>
             <div className={styles["right-side"]}>
-              <h1>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+              >
+                <Tab label={`Активные ${activityPosts.length}`} />
+                <Tab label={`Проданные ${soldPosts.length}`} />
+              </Tabs>
+
+              <TabPanel value={value} index={0}>
+                {activityPosts.length == 0 ? (
+                  <div>нифига нету</div>
+                ) : (
+                  <CardPosts
+                    posts={activityPosts}
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 2, sm: 2, md: 13 }}
+                  />
+                )}
+              </TabPanel>
+              <TabPanel
+                value={value}
+                index={1}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                {soldPosts.length == 0 ? (
+                  <div className={styles["tabs-alert-span"]}>
+                    <span>Все снятые с продажи объявления будут</span>
+
+                    <span>отображаться на этой странице.</span>
+                  </div>
+                ) : (
+                  <CardPosts
+                    posts={soldPosts}
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 2, sm: 2, md: 13 }}
+                  />
+                )}
+              </TabPanel>
+
+              {/*   <h1>
                 {user?.posts.length == 1
                   ? `Найдено ${user.posts.length} объявление`
                   : ""}
@@ -137,12 +201,12 @@ function User() {
                   ? `Найдено ${user.posts.length} объявлений`
                   : ""}
                 {user?.posts.length == 0 ? `Объявлений не найдено` : ""}
-              </h1>
-              <CardPosts
+              </h1> */}
+              {/*  <CardPosts
                 posts={user.posts}
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 2, sm: 2, md: 13 }}
-              />
+              /> */}
             </div>
           </div>
         </div>

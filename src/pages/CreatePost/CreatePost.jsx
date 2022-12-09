@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ErrorMessage, Form, Formik } from "formik";
-import { DropzoneArea } from "material-ui-dropzone";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { v4 } from "uuid";
@@ -104,12 +103,8 @@ function CreatePost() {
                   console.log(`${variant}: ${message}`)
                 }
               /> */}
-              <DropzoneArea
-                acceptedFiles={["image/*"]}
-                dropzoneText={"Перетащите изображение сюда или нажмите"}
-                onChange={(files) => console.log("Files:", files)}
-              />
-              penis
+       
+              
               <div className={styles["create-post_category"]}>
                 <div style={{ width: "100%" }}>
                   <InputLabel id="demo-simple-select-label">
