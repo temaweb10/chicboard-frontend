@@ -16,6 +16,7 @@ function User() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
   const [isMe, setIsMe] = useState(false);
+  const [isSubscribe,setIsSubcribe] = useState(false)
   const [me, setMe] = useState("");
   const [activityPosts, setActivityPosts] = useState([]);
   const [soldPosts, setsoldPosts] = useState([]);
@@ -58,10 +59,41 @@ function User() {
     };
     getUser();
   }, []);
+
   useEffect(() => {
     /*     console.log(user?.posts); */
-    console.log(activityPosts);
+    console.log(isSubscribe)
+    console.log(isSubscribe);
   }, [user]);
+  const Subscriber = (userId,subscribeUserId)=>{
+    if(isSubscribe == true) {
+      axios
+      .post(`/api/${userId}/removeSubscribe/${subscribeUserId}`)
+      .then(()=>{
+          setIsSubcribe(false)
+          console.log('вы успешно ОТПИСАЛИСЬ на пользователя')
+      })
+      .catch((err)=>{
+        console.log('ошибка')
+      })
+    
+    } 
+
+    if (isSubscribe == false) {
+      axios
+      .post(`/api/${userId}/addSubscribe/${subscribeUserId}`)
+      .then(()=>{
+          setIsSubcribe(true)
+          console.log('вы успешно подписались на пользователя')
+      })
+      .catch((err)=>{
+        console.log('ошибка')
+      })
+    
+    }
+    
+
+  }
 
   const [value, setValue] = React.useState(0);
 
@@ -129,13 +161,13 @@ function User() {
                   </div>
                 </div>
               </div>
-              {isMe == true && me.username == user?.username ? (
+       {/*        {isMe == true && me.username == user?.username ? (
                 ""
               ) : (
                 <button className={styles["subscribe-button"]}>
                   Подписаться
                 </button>
-              )}
+              )} */}
 
               <div className={styles["user-social-counters"]}>
                 <div className={styles["user-social-block"]}>
@@ -143,7 +175,7 @@ function User() {
                   <span className={styles["user-social-name"]}>отзыва</span>
                 </div>
                 <div className={styles["user-social-block"]}>
-                  <span className={styles["user-social-count"]}>22</span>
+                  <span className={styles["user-social-count"]}>{user.subscribersList.length}</span>
                   <span className={styles["user-social-name"]}>подписчики</span>
                 </div>
                 <div className={styles["user-social-block"]}>
@@ -151,6 +183,17 @@ function User() {
                   <span className={styles["user-social-name"]}>подписки</span>
                 </div>
               </div>
+
+              {isMe == true && me.username == user?.username ? (
+                ""
+              ) : (
+                <button className={`subscribe-button ${isSubscribe == true ? 'unsubscribe-button' : ''}`}  /* className={styles[isSubscribe == false ? "subscribe-button" : 'unsubscribe-button']}  */  onClick={(e)=>{
+                   Subscriber(user._id,me._id,) 
+                    }} >
+                      {isSubscribe == true ? 'Отписаться' : 'Подписаться'} 
+                    </button>
+                  )}
+
             </div>
             <div className={styles["right-side"]}>
               <Tabs
@@ -164,7 +207,11 @@ function User() {
 
               <TabPanel value={value} index={0}>
                 {activityPosts.length == 0 ? (
-                  <div>нифига нету</div>
+                   <div className={styles["tabs-alert-span"]}>
+                    <span>Все активные объявления будут</span>
+
+                    <span>отображаться на этой странице.</span>
+                 </div>
                 ) : (
                   <CardPosts
                     posts={activityPosts}

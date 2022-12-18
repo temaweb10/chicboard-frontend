@@ -1,4 +1,3 @@
-import { json } from "express";
 
 const recommendLC = (category, podCategory) => {
   let recPA = localStorage.getItem("recPA");
@@ -25,7 +24,7 @@ const recommendLC = (category, podCategory) => {
       console.log(value);
 
       if (value.category == category) {
-        value.priority += 1;
+        value.priority = value.priority+1;
         bilaLiTakayaCategory = true;
         return value;
       } else if (value.category !== category) {
