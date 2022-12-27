@@ -9,6 +9,7 @@ function Main() {
   const [posts, setPosts] = useState();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
+    document.title = 'АРТАРЕА: недвижимость , транспорт'
     const getPosts = async () => {
       const { data } = await axios.get("/api/posts");
       console.log(data);

@@ -25,6 +25,7 @@ function Login() {
   });
 
   useEffect(() => {
+    document.title = 'Авторизация'
     console.log(userLogin);
   }, [userLogin]);
 
