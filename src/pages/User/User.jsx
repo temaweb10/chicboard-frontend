@@ -10,7 +10,12 @@ import CardPost from "../../components/CardPost/CardPost";
 import CardPosts from "../../components/CardPosts/CardPosts";
 import Header from "../../components/Header/Header";
 import Loader from "../../components/Loader/Loader";
+import Modal from '@mui/material/Modal';
 import styles from "./User.module.scss";
+import Box from '@mui/material/Box';
+import SubscribersList from "../../components/Subscribers/SubscribersList";
+import { MdOutlineClose } from "react-icons/md";
+
 function User() {
   const params = useParams();
   const [loading, setLoading] = useState(false);
@@ -62,9 +67,9 @@ function User() {
 
   useEffect(() => {
     /*     console.log(user?.posts); */
-    console.log(isSubscribe)
-    console.log(isSubscribe);
-  }, [user]);
+
+    console.log(isMe);
+  }, [isMe]);
   const Subscriber = (userId,subscribeUserId)=>{
     if(isSubscribe == true) {
       axios
@@ -96,10 +101,18 @@ function User() {
   }
 
   const [value, setValue] = React.useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [valuePanel, setValuePanel] = React.useState(0);
+  const handleChangePanel = (event, newValue) => {
+    setValuePanel(newValue);
+  };
+
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -178,8 +191,8 @@ function User() {
                   <span className={styles["user-social-count"]}>{user.subscribersList.length}</span>
                   <span className={styles["user-social-name"]}>подписчики</span>
                 </div>
-                <div className={styles["user-social-block"]}>
-                  <span className={styles["user-social-count"]}>1</span>
+                <div className={styles["user-social-block"]} onClick={handleOpen} style={{cursor:'pointer'}}>
+                <span className={styles["user-social-count"]}>{user.userSubscribedList.length}</span>
                   <span className={styles["user-social-name"]}>подписки</span>
                 </div>
               </div>
@@ -194,51 +207,100 @@ function User() {
                     </button>
                   )}
 
+                
+                <div  className={styles['tabs']} style={{display:`${isMe == true ? 'block' : 'none'}`}}>
+                  <Tabs 
+                    orientation="vertical"
+                    variant="scrollable"
+                    value={valuePanel}
+                    onChange={handleChangePanel}
+                    aria-label="Vertical tabs example"
+                    sx={{ borderRight: 1, borderColor: 'divider',
+                    "& .MuiTabs-indicator": {
+                      display: "none"
+                     
+                    } }}
+                    style={{borderRight:'none'}}
+                    className={styles['tabs-component']}
+           
+                  >
+                  
+                    <Tab label="Объявления" className={styles['tab-panel']}/>
+                    <Tab label="Закладки"  className={styles['tab-panel']}/> 
+                    <Tab label="Настройки"  className={styles['tab-panel']}/> 
+                
+                  </Tabs>
+                </div>
+
+             
+                        
             </div>
+
+        
+
             <div className={styles["right-side"]}>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-              >
-                <Tab label={`Активные ${activityPosts.length}`} />
-                <Tab label={`Проданные ${soldPosts.length}`} />
-              </Tabs>
+             
+              
+              <TabPanel value={valuePanel} index={0}>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="basic tabs example"
+                  >
+                    <Tab label={`Активные ${activityPosts.length}`} />
+                    <Tab label={`Проданные ${soldPosts.length}`} />
+                  
+                  </Tabs>
 
-              <TabPanel value={value} index={0}>
-                {activityPosts.length == 0 ? (
-                   <div className={styles["tabs-alert-span"]}>
-                    <span>Все активные объявления будут</span>
 
-                    <span>отображаться на этой странице.</span>
-                 </div>
-                ) : (
-                  <CardPosts
-                    posts={activityPosts}
-                    spacing={{ xs: 2, md: 3 }}
-                    columns={{ xs: 2, sm: 2, md: 13 }}
-                  />
-                )}
-              </TabPanel>
-              <TabPanel
-                value={value}
-                index={1}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                {soldPosts.length == 0 ? (
-                  <div className={styles["tabs-alert-span"]}>
-                    <span>Все снятые с продажи объявления будут</span>
+                    <TabPanel value={value} index={0}>
+                    {activityPosts.length == 0 ? (
+                      <div className={styles["tabs-alert-span"]}>
+                        <span>Все активные объявления будут</span>
 
-                    <span>отображаться на этой странице.</span>
-                  </div>
-                ) : (
-                  <CardPosts
-                    posts={soldPosts}
-                    spacing={{ xs: 2, md: 3 }}
-                    columns={{ xs: 2, sm: 2, md: 13 }}
-                  />
-                )}
-              </TabPanel>
+                        <span>отображаться на этой странице.</span>
+                    </div>
+                    ) : (
+                      <CardPosts
+                        posts={activityPosts}
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 2, sm: 2, md: 13 }}
+                      />
+                    )}
+
+                  </TabPanel>
+
+                  <TabPanel
+                    value={value}
+                    index={1}
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    {soldPosts.length == 0 ? (
+                      <div className={styles["tabs-alert-span"]}>
+                        <span>Все снятые с продажи объявления будут</span>
+
+                        <span>отображаться на этой странице.</span>
+                      </div>
+                    ) : (
+                      <CardPosts
+                        posts={soldPosts}
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 2, sm: 2, md: 13 }}
+                      />
+                    )}
+                  </TabPanel>
+                
+                </TabPanel>
+
+                <TabPanel value={valuePanel} index={1}>
+                  like
+                </TabPanel>
+
+                <TabPanel value={valuePanel} index={2}>
+                  Настройки
+                </TabPanel>
+
+             
 
               {/*   <h1>
                 {user?.posts.length == 1
@@ -254,6 +316,39 @@ function User() {
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 2, sm: 2, md: 13 }}
               /> */}
+
+              <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                <div>
+     
+                    <Box  sx={
+                        {position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                      
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        }}
+                        className={styles['modal']}
+                      >
+                        <div style={{display:'flex',justifyContent:'flex-end'}}>
+                          <MdOutlineClose className={styles['modal-close-icon']} onClick={handleClose}/>
+                        </div>
+                       
+                          <Box  className={styles['modal-content']} sx={{p:2}}>
+              
+                            <SubscribersList idArray={user.userSubscribedList}/>
+                          </Box>
+                  </Box>
+                </div>
+                
+
+                </Modal>
             </div>
           </div>
         </div>
