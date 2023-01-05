@@ -2,14 +2,16 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 const firebaseConfig = {
-  apiKey: "AIzaSyBoX25cVKucSQUG-VGyunYzHydWfRoCtxA",
-  authDomain: "chicboard-25968.firebaseapp.com",
-  projectId: "chicboard-25968",
-  storageBucket: "chicboard-25968.appspot.com",
-  messagingSenderId: "3657009343",
-  appId: "1:3657009343:web:e752190a7f65156f4d5e0a",
+  apiKey: "AIzaSyDmyY5ilyY7CGo8QadA-nKo3Ul4eAMaKN4",
+  authDomain: "chicboard-chat.firebaseapp.com",
+  projectId: "chicboard-chat",
+  storageBucket: "chicboard-chat.appspot.com",
+  messagingSenderId: "954876379549",
+  appId: "1:954876379549:web:b741dc8d57a1bf19aeaf74",
+  measurementId: "G-2XNGHVS9QB"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const storage = getStorage(app);
+const firebase = initializeApp(firebaseConfig);
+export const storage = getStorage(firebase);
+export default firebase

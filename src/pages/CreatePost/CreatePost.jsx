@@ -16,7 +16,7 @@ import { storage } from "../../firebase";
 import styles from "../CreatePost/CreatePost.module.scss";
 function CreatePost() {
   const currentUser = useSelector((state) => state.auth.currentUser);
-  const id = currentUser?.user?.id;
+  const id = currentUser?.user?.id; 
   const [selectValues, setSelectValues] = useState({
     category: "",
     podCategory: "",

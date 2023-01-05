@@ -5,6 +5,7 @@ import auth from "../src/common/auth";
 import { store } from "../src/store/index";
 import "./App.css";
 import TestFormik from "./components/testFormik/TestFormik";
+import Chat from "./pages/Chat/Chat";
 import CreatePost from "./pages/CreatePost/CreatePost";
 import EditProfile from "./pages/EditProfile/EditProfile";
 import Error404 from "./pages/Error404/Error404";
@@ -13,6 +14,7 @@ import Main from "./pages/Main/Main";
 import Me from "./pages/Me/Me";
 import Post from "./pages/Post/Post";
 import Registration from "./pages/Registration/Registration";
+
 import User from "./pages/User/User";
 
 function App() {
@@ -47,6 +49,8 @@ function App() {
         />
         <Route path="/me/edit" element={<EditProfile />} />
         <Route path="/user/:userName" element={<User />} />
+        <Route path="/user/:userName/:tabName" element={<User />} />
+        <Route path="/chat/:roomId" element={<Chat />} />
         {/*  <Route path="/me" element={<Me />} /> */}
         <Route path="/test" element={<TestFormik />} />
         <Route path="/404" element={<Error404 />} />

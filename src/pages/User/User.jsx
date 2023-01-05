@@ -15,7 +15,8 @@ import styles from "./User.module.scss";
 import Box from '@mui/material/Box';
 import SubscribersList from "../../components/Subscribers/SubscribersList";
 import { MdOutlineClose } from "react-icons/md";
-
+import Paper from '@mui/material/Paper';
+import Chat from '../Chat/Chat'
 function User() {
   const params = useParams();
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,10 @@ function User() {
         })
         .then((resp) => {
           setMe(resp.data);
-          setIsMe(true);
+          if(params.userName == resp.data._id){
+            setIsMe(true);
+          }
+         ;
         })
         .catch((err) => {
           console.log(err);
@@ -52,9 +56,11 @@ function User() {
         setUser(data);
         console.log(data);
         data.posts.map((value) => {
+     
           if (value[0]?.typePost == "active") {
+            console.log(activityPosts)
             setActivityPosts([{ ...activityPosts, ...value }]);
-            console.log("АКТИВВВ ААААА");
+      
           } else if (value[0]?.typePost == "sold") {
             setsoldPosts([{ ...soldPosts, ...value }]);
           }
@@ -66,8 +72,7 @@ function User() {
   }, []);
 
   useEffect(() => {
-    /*     console.log(user?.posts); */
-
+    
     console.log(isMe);
   }, [isMe]);
   const Subscriber = (userId,subscribeUserId)=>{
@@ -107,8 +112,8 @@ function User() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [valuePanel, setValuePanel] = React.useState(0);
+  //0 tasks 1 favorite 2 settings
+  const [valuePanel, setValuePanel] = React.useState(params.tabName == 'tasks' ? 0 : params.tabName == 'favorite' ? 1 :  params.tabName == 'settings' ? 2 : params.tabName == 'chat' ? 3 : 0);
   const handleChangePanel = (event, newValue) => {
     setValuePanel(newValue);
   };
@@ -197,18 +202,54 @@ function User() {
                 </div>
               </div>
 
-              {isMe == true && me.username == user?.username ? (
-                ""
-              ) : (
-                <button className={`subscribe-button ${isSubscribe == true ? 'unsubscribe-button' : ''}`}  /* className={styles[isSubscribe == false ? "subscribe-button" : 'unsubscribe-button']}  */  onClick={(e)=>{
+                {isMe == true && me.username == user?.username ? (
+                  ""
+                ) : (
+                <button className={`subscribe-button ${isSubscribe == true ? 'unsubscribe-button' : ''}`}  onClick={(e)=>{
                    Subscriber(user._id,me._id,) 
                     }} >
                       {isSubscribe == true ? 'Отписаться' : 'Подписаться'} 
                     </button>
                   )}
 
+
+                {isMe == false ? 
+                    <a href={`/chat`}>
+                        <button className={styles['write-user-button']}>
+                            Написать
+                        </button> 
+                    </a>
+                       
+                :''}
+              
+
+                {isMe == true ?  <div  className={styles['tabs']}>
+                                    <Tabs 
+                                      orientation="vertical"
+                                      variant="scrollable"
+                                      value={valuePanel}
+                                      onChange={handleChangePanel}
+                                      aria-label="Vertical tabs example"
+                                      sx={{ borderRight: 1, borderColor: 'divider',
+                                      "& .MuiTabs-indicator": {
+                                        display: "none"
+                                      
+                                      } }}
+                                      style={{borderRight:'none'}}
+                                      className={styles['tabs-component']}
+                            
+                                    >
+                                    
+                                      <Tab label="Объявления" className={styles['tab-panel']}/>
+                                      <Tab label="Закладки"  className={styles['tab-panel']}/> 
+                                      <Tab label="Настройки"  className={styles['tab-panel']}/> 
+                                      <Tab label="Сообщения"  className={styles['tab-panel']}/> 
+                                  
+                                    </Tabs>
+                                  </div>
+                :''  }
                 
-                <div  className={styles['tabs']} style={{display:`${isMe == true ? 'block' : 'none'}`}}>
+               {/*  <div  className={styles['tabs']} style={{display:`${isMe == true ? 'block' : 'none'}`}}>
                   <Tabs 
                     orientation="vertical"
                     variant="scrollable"
@@ -230,7 +271,7 @@ function User() {
                     <Tab label="Настройки"  className={styles['tab-panel']}/> 
                 
                   </Tabs>
-                </div>
+                </div> */}
 
              
                         
@@ -299,6 +340,9 @@ function User() {
                 <TabPanel value={valuePanel} index={2}>
                   Настройки
                 </TabPanel>
+                <TabPanel value={valuePanel} index={3}>
+                  <Chat/>
+                </TabPanel>
 
              
 
@@ -341,8 +385,8 @@ function User() {
                         </div>
                        
                           <Box  className={styles['modal-content']} sx={{p:2}}>
-              
                             <SubscribersList idArray={user.userSubscribedList}/>
+        
                           </Box>
                   </Box>
                 </div>
