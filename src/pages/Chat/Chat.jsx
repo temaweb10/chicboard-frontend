@@ -2,10 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import {useParams} from 'react-router-dom'
 import '../../App.css';
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
+import  'firebase/compat/firestore';
+/* import { doc , query, where} from "firebase/compat/firestore"; */
 import 'firebase/compat/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { query, orderBy, limit ,where} from "firebase/firestore";  
+
+import axios from 'axios';
 
 firebase.initializeApp({
   apiKey: "AIzaSyDmyY5ilyY7CGo8QadA-nKo3Ul4eAMaKN4",
@@ -18,32 +22,73 @@ firebase.initializeApp({
 });
 
 const auth = firebase.auth();
-const firestore = firebase.firestore();
+const firestore = firebase.firestore()
 
 
-function Chat() {
-  const [user] = useAuthState(auth);
 
-  const roomsRef = firebase
-  .firestore()
-  .collection("rooms");
 
-  roomsRef
-  .get()
-  .then((snapshot) => {
-   /*  const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })); */
-    console.log("", snapshot); 
-    // [ { id: 'glMeZvPpTN1Ah31sKcnj', title: 'The Great Gatsby' } ]
-  });
-  
+const Chat =  ()=> {
+
+  const [me, setMe] = useState("");
+  const [isFB, setIsFB] = useState("")
+  const [loading,setLoading] = useState(false)
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      axios
+        .get("/api/me", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        })
+        .then((resp) => {
+          setMe(resp.data);
+
+          const userRef =  firestore.collection('users')     
+          const mongo_id = resp.data._id
+          /* userRef.where("mongo_id", "==", '635e845e8fe1a6722a37b4c7').get() */
+         
+          userRef.where("mongo_id", "==", mongo_id).get().then(function(doc) {
+                
+            if (doc.empty) {
+                console.log("No such document!");
+                setIsFB(false)
+                userRef.add({
+                  
+                  rooms: [], // массив id комнат, в которых участвует пользователь
+                  mongo_id:mongo_id
+                })
+            }
+
+          }).catch(function(error) {
+              console.log("Error getting document:", error);
+          });
+        setLoading(true)
+        })
+        .catch((err) => {
+          console.log(err);
+        
+        });
+    
+  }
+ 
+  }, []);
+
+
+ /*  const q = query(firestore.collection('users') , where("mongo_id", "=", '100000')) */
+
+ /*  const test = async ()=>{
+    const snapshot = await firestore.collection('users').where("mongo_id", "==", '635e845e8fe1a6722a37b4c7').get();
+    snapshot.forEach(doc=> {
+      console.log(doc.data())
+  })
+  }
+
+  test() */
+ 
   return (
     <div className="App">
       <header>
         <h1>sex</h1>
-        <SignOut />
+      {/*   <SignOut /> */}
       </header>
 
       <section>
