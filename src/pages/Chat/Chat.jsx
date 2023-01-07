@@ -1,109 +1,117 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {useParams} from 'react-router-dom'
-import '../../App.css';
-import firebase from 'firebase/compat/app';
-import  'firebase/compat/firestore';
-/* import { doc , query, where} from "firebase/compat/firestore"; */
-import 'firebase/compat/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { query, orderBy, limit ,where} from "firebase/firestore";  
-
-import axios from 'axios';
-
-firebase.initializeApp({
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import "../../App.css";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import {
+  doc,
+  onSnapshot,
+  updateDoc,
+  setDoc,
+  deleteDoc,
+  collection,
+  serverTimestamp,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  limit,
+  getFirestore,
+} from "firebase/firestore";
+import "firebase/compat/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  useCollectionData,
+  useCollectionOnce,
+} from "react-firebase-hooks/firestore";
+import Paper from "@mui/material/Paper";
+import axios from "axios";
+import Loader from "../../components/Loader/Loader";
+const firebaseConfig = firebase.initializeApp({
   apiKey: "AIzaSyDmyY5ilyY7CGo8QadA-nKo3Ul4eAMaKN4",
   authDomain: "chicboard-chat.firebaseapp.com",
   projectId: "chicboard-chat",
   storageBucket: "chicboard-chat.appspot.com",
   messagingSenderId: "954876379549",
   appId: "1:954876379549:web:b741dc8d57a1bf19aeaf74",
-  measurementId: "G-2XNGHVS9QB"
+  measurementId: "G-2XNGHVS9QB",
 });
-
+/* const db = getFirestore(); */
 const auth = firebase.auth();
-const firestore = firebase.firestore()
+const firestore = firebase.firestore();
+const db = getFirestore(firebaseConfig);
 
-
-
-
-const Chat =  ()=> {
-
+const Chat = () => {
   const [me, setMe] = useState("");
-  const [isFB, setIsFB] = useState("")
-  const [loading,setLoading] = useState(false)
+  const [isFB, setIsFB] = useState("");
+  const [mongoId, setMongoId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
+      console.log("aa1");
       axios
         .get("/api/me", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
         .then((resp) => {
           setMe(resp.data);
 
-          const userRef =  firestore.collection('users')     
-          const mongo_id = resp.data._id
-          /* userRef.where("mongo_id", "==", '635e845e8fe1a6722a37b4c7').get() */
-         
-          userRef.where("mongo_id", "==", mongo_id).get().then(function(doc) {
-                
-            if (doc.empty) {
+          const userRef = firestore.collection("users");
+          console.log("aa2");
+          setMongoId(resp.data._id);
+          userRef
+            .where("mongo_id", "==", resp.data._id)
+            .get()
+            .then(function (doc) {
+              if (doc.empty) {
                 console.log("No such document!");
-                setIsFB(false)
+                setIsFB(false);
                 userRef.add({
-                  
                   rooms: [], // массив id комнат, в которых участвует пользователь
-                  mongo_id:mongo_id
-                })
-            }
-
-          }).catch(function(error) {
+                  mongo_id: resp.data._id,
+                });
+              }
+            })
+            .catch(function (error) {
               console.log("Error getting document:", error);
-          });
-        setLoading(true)
+            });
         })
         .catch((err) => {
           console.log(err);
-        
         });
-    
-  }
- 
+      setLoading(true);
+    }
   }, []);
 
+  return <Paper>{loading ? <RoomsList idM={mongoId} /> : <Loader />}</Paper>;
+};
+/* <RoomsList idM={mongoId} /> */
 
- /*  const q = query(firestore.collection('users') , where("mongo_id", "=", '100000')) */
+const RoomsList = ({ idM }) => {
+  const [userData, setUserData] = useState();
+  const colletionRef = collection(db, "users");
 
- /*  const test = async ()=>{
-    const snapshot = await firestore.collection('users').where("mongo_id", "==", '635e845e8fe1a6722a37b4c7').get();
-    snapshot.forEach(doc=> {
-      console.log(doc.data())
-  })
+  const messagesRef = firestore.collection("users");
+  const query = messagesRef.where("mongo_id", "==", `${idM}`);
+
+  /*   const [messages] = useCollectionData(query, { idField: "id" }); */
+  const [querySnap, loading, error] = useCollectionData(query, {
+    idField: "id",
+  });
+
+  if (!loading) {
+    console.log(querySnap[0]);
   }
 
-  test() */
- 
-  return (
-    <div className="App">
-      <header>
-        <h1>sex</h1>
-      {/*   <SignOut /> */}
-      </header>
+  return <div>{!loading ? <div></div> : <Loader />}</div>;
+};
 
-      <section>
-       {/*  {user ? <ChatRoom /> : <SignIn />} */}
-      </section>
+const Room = ({ user }) => {};
 
-    </div>
-  );
-}
-
-
-
-
-
-
+/* 
 
 function SignIn() {
 
@@ -186,9 +194,6 @@ function ChatMessage(props) {
     </div>
   </>)
 }
+ */
 
-
-
-
-export default Chat
-
+export default Chat;
