@@ -271,7 +271,7 @@ function User() {
                         </div>
 
                         <Box className={styles["modal-content"]} sx={{ p: 2 }}>
-                          <Chat />
+                          <Chat to={params.userName} />
                         </Box>
                       </Box>
                     </div>
@@ -390,7 +390,7 @@ function User() {
                 Настройки
               </TabPanel>
               <TabPanel value={valuePanel} index={3}>
-                <Chat />
+                {/*     <Chat /> */}
               </TabPanel>
 
               {/*   <h1>
