@@ -60,7 +60,7 @@ const Chat = ({ to }) => {
           setMe(resp.data);
 
           const userRef = firestore.collection("users");
-          console.log("aa2");
+          console.log(resp.data._id);
           setMongoId(resp.data._id);
           userRef
             .where("mongo_id", "==", resp.data._id)
@@ -99,6 +99,7 @@ const Chat = ({ to }) => {
         .catch((err) => {
           console.log(err);
         });
+      console.log(mongoId);
       setLoading(true);
     }
   }, []);
@@ -106,9 +107,10 @@ const Chat = ({ to }) => {
   return <div>{loading ? <ChatRoom meId={mongoId} to={to} /> : ""}</div>;
 };
 
-function ChatRoom({ meId, to }) {
+function ChatRoom({ to, meId }) {
   console.log(meId, to);
   let [loadingFB, setLoadingFB] = useState(false);
+  let [callOne, setCallOne] = useState(false);
   const roomsRef = firestore.collection("rooms");
   const msgRef = firestore.collection("messages");
   const query = roomsRef.where("users", "in", [[meId, `${to}`]]);
@@ -118,50 +120,55 @@ function ChatRoom({ meId, to }) {
   });
 
   useEffect(() => {
-    console.log(querySnap);
     if (querySnap !== undefined) {
-      if (querySnap.length > 0) {
-      } else {
-        roomsRef
-          .add({
-            ts: firebase.firestore.FieldValue.serverTimestamp(),
-            users: [meId, to],
-          })
-          .then(function (docRef) {
-            firebase
-              .firestore()
-              .collection("users")
-              .where("mongo_id", "==", meId)
-              .get()
-              .then(function (querySnapshot) {
-                querySnapshot.forEach(function (document) {
-                  console.log(document.data());
-                  console.log("aaaaaaAAAA", docRef.id);
-                  document.ref.update({
-                    rooms: [...document.data().rooms, docRef.id],
+      if (!loadingQ == true) {
+        if (querySnap.length <= 0) {
+          if (callOne !== true) {
+            setCallOne(true);
+            console.log("users", [meId, to]);
+            roomsRef
+              .add({
+                ts: firebase.firestore.FieldValue.serverTimestamp(),
+                users: [meId, to],
+              })
+              .then(function (docRef) {
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .where("mongo_id", "==", meId)
+                  .get()
+                  .then(function (querySnapshot) {
+                    querySnapshot.forEach(function (document) {
+                      console.log(document.data());
+                      console.log("aaaaaaAAAA", docRef.id);
+                      document.ref.update({
+                        rooms: [...document.data().rooms, docRef.id],
+                      });
+                    });
                   });
+
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .where("mongo_id", "==", to)
+                  .get()
+                  .then(function (querySnapshot) {
+                    querySnapshot.forEach(function (document) {
+                      document.ref.update({
+                        rooms: [...document.data().rooms, docRef.id],
+                      });
+                    });
+                  });
+
+                msgRef.add({
+                  roomId: docRef.id,
+                  msgArr: [],
                 });
               });
-
-            firebase
-              .firestore()
-              .collection("users")
-              .where("mongo_id", "==", to)
-              .get()
-              .then(function (querySnapshot) {
-                querySnapshot.forEach(function (document) {
-                  document.ref.update({
-                    rooms: [...document.data().rooms, docRef.id],
-                  });
-                });
-              });
-
-            msgRef.add({
-              roomId: docRef.id,
-            });
-          });
+          }
+        }
+        setLoadingFB(true);
       }
-      setLoadingFB(true);
     }
   }, [loadingQ]);
 
@@ -170,40 +177,123 @@ function ChatRoom({ meId, to }) {
     }); */
   return (
     <>
-      {loadingFB ? <h1>Загрузилось</h1> : <Loader />}
-      <main>
-        <MessagesList />
-      </main>
+      {loadingFB ? <MessagesList to={to} meId={meId} /> : <Loader />}
+      <main></main>
 
       <button>🕊️</button>
     </>
   );
 }
+
 /* let query = roomsRef.where("users", "in", [[meId, `${to}`]]);
 
       let [querySnap, loadingQ, error] = useCollectionData(query, {
         idField: "id",
       }); */
 
-const MessagesList = () => {
-  /*  const roomsRef = firestore.collection("rooms");
-  let query = roomsRef.where("users", "in", [[meId, `${to}`]]);
+const MessagesList = ({ to, meId }) => {
+  let [roomId, setRoomId] = useState("rvUPm04ltlKV86wZAIF2");
+  let [loadingFetch, setLoadingFetch] = useState(false);
 
-      let [querySnap, loadingQ, error] = useCollectionData(query, {
-        idField: "id",
-      }); */
-  return <div></div>;
-};
+  const roomsRef = firestore.collection("rooms");
+  const msgRef = firestore.collection("messages");
+  const query = roomsRef.where("users", "in", [[meId, to]]);
 
-function HaveRoom(meId, to) {
-  const messagesRef = firestore.collection("rooms");
-  const query = messagesRef.where("users", "array-contains", [meId, to]);
+  const messagesRef = firestore.collection("messages");
+  const queryMsg = messagesRef.where("roomId", "==", "rvUPm04ltlKV86wZAIF2");
+
+  const [messages] = useCollectionData(queryMsg, { idField: "id" });
+
+  const [text, setText] = useState({
+    text: "",
+  });
 
   let [querySnap, loadingQ, error] = useCollectionData(query, {
     idField: "id",
   });
-  console.log(querySnap);
-  return "";
+
+  useEffect(() => {
+    if (querySnap !== undefined) {
+      if (!loadingQ == true) {
+        firebase
+          .firestore()
+          .collection("rooms")
+          .where("users", "in", [[meId, to]])
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (document) {
+              console.log(document.id);
+              setRoomId(document.id);
+            });
+          });
+      }
+      setLoadingFetch(true);
+    }
+  }, [loadingQ]);
+  console.log(messages);
+
+  const sendMessage = async (e) => {
+    firebase
+      .firestore()
+      .collection("messages")
+      .where("roomId", "==", "rvUPm04ltlKV86wZAIF2")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (document) {
+          /*  console.log([
+            ...document.data().msgArr,
+            { ...inputValues, id: meId },
+          ]); */
+          document.ref.update({
+            msgArr: [
+              ...document.data().msgArr,
+              {
+                text: text.text,
+                id: meId,
+              },
+            ],
+          });
+        });
+      });
+    /*   await queryMsg.add({
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      ...inputValues,
+    }); */
+  };
+
+  return (
+    <div>
+      {loadingFetch ? (
+        <div>
+          <button onClick={sendMessage}>отправить</button>
+          <input onChange={(e) => setText({ ...text, text: e.target.value })} />
+
+          {messages[0].msgArr &&
+            messages[0].msgArr.map((msg) => (
+              <ChatMessage
+                key={`${Date.now()}_post${Math.random(10)}`}
+                meId={meId}
+                msg={msg}
+              />
+            ))}
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
+  );
+};
+
+function ChatMessage({ msg, meId }) {
+  const messageClass = msg.id === meId ? "sent" : "received";
+  console.log(msg);
+  return (
+    <>
+      <div className={`message ${messageClass}`}>
+        <p>{msg.text}</p>
+      </div>
+    </>
+  );
 }
 
 /* const Chat = () => {
