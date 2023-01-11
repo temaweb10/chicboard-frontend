@@ -273,6 +273,10 @@ function User() {
                         <Box className={styles["modal-content"]} sx={{ p: 2 }}>
                           <Chat to={params.userName} />
                         </Box>
+
+                        <div className={styles["modal-input-div"]} sx={{ p: 2 }}>
+                          <h1>fdgdfg</h1>
+                        </div>  
                       </Box>
                     </div>
                   </Modal>

@@ -161,13 +161,15 @@
   outline: 0px !important;
   border-radius: 10px;
   display: flex;
-  justify-content: flex-end;
   flex-direction: column;
-  width: 70%;
+  width: 30%;
+  min-height: 80vh;
 }
 
 .modal-content {
   /*   width: 100%; */
+  background-color: #f4f4f4;
+  height: 100%;
 }
 
 .modal-close-icon {

@@ -265,17 +265,28 @@ const MessagesList = ({ to, meId }) => {
     <div>
       {loadingFetch ? (
         <div>
-          <button onClick={sendMessage}>отправить</button>
-          <input onChange={(e) => setText({ ...text, text: e.target.value })} />
+{/*           <button onClick={sendMessage}>отправить</button> */}
+       {/*    <input onChange={(e) => setText({ ...text, text: e.target.value })} /> */}
 
-          {messages[0].msgArr &&
-            messages[0].msgArr.map((msg) => (
+       {messages.length !== 0 ?  <input onChange={(e) => setText({ ...text, text: e.target.value })} /> : ''}
+
+         {/*   {messages.length !== 0 &&
+            messages?.[0].msgArr.map((msg) => (
               <ChatMessage
                 key={`${Date.now()}_post${Math.random(10)}`}
                 meId={meId}
                 msg={msg}
               />
-            ))}
+            ))}   */}
+
+            {messages.length !== 0 ?  messages?.[0].msgArr.map((msg) => (
+              <ChatMessage
+                key={`${Date.now()}_post${Math.random(10)}`}
+                meId={meId}
+                msg={msg}
+              />
+            )) : <h1>пусто</h1>}
+
         </div>
       ) : (
         ""
